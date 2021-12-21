@@ -1,0 +1,17 @@
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\bin\Debug\Exercicio2_clube.exe.config
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\bin\Debug\Exercicio2_clube.exe
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\bin\Debug\Exercicio2_clube.pdb
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.csproj.AssemblyReference.cache
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.csproj.SuggestedBindingRedirects.cache
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.FormCadastroCliente.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.FormPrincipal.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.Properties.Resources.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.csproj.GenerateResource.cache
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.csproj.CoreCompileInputs.cache
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.exe
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.pdb
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.FormCadastroDependente.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.FormVisualClientes.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.FormVisualDependentes.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.View.FormVisualMensalidade.resources
+C:\Users\marco.almeida\source\repos\Exercicio2_clube\Exercicio2_clube\obj\Debug\Exercicio2_clube.View.FormAtualizarMensalidade.resources
