@@ -1,1 +1,1 @@
-# exercicio_clube
+# Sistema para gerenciamento de ativos de um clube
