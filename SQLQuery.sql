@@ -137,4 +137,11 @@
 --   on tb_cliente.id_pessoa = tb_pessoa.id_pessoa
 --where tb_cliente.id_pessoa = 1
 
-select * from tb_dependente
+--use [CLUBE]
+--go
+--select tb_pessoa.nome_pessoa 
+--from tb_pessoa
+--inner join tb_cliente
+--    on tb_cliente.id_pessoa = tb_pessoa.id_pessoa
+--where tb_pessoa.ativo_pessoa = 1 order by tb_cliente.id_pessoa asc
+--go

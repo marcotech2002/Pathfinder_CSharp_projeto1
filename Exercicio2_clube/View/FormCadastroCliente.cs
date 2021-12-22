@@ -15,6 +15,7 @@ namespace Exercicio2_clube
     public partial class FormCadastroCliente : Form
     {
         private int id = 0;
+        private Cliente antigo = null;
 
         public FormCadastroCliente()
         {
@@ -27,23 +28,25 @@ namespace Exercicio2_clube
             InitializeComponent();
             this.ConfigurarComboBox();
             this.id = id;
-
             lblTitulo.Text = "Atualização de clientes";
+            btnCadastrar.Text = "Atualizar";
 
-            Cliente c = new ClienteDAO().PesquisarPorId(id);
-            if(c != null)
+            this.antigo = new ClienteDAO().PesquisarPorId(id);
+            if(antigo != null)
             {
-                txtNome.Text = c.Nome_pessoa;
-                txtEmail.Text = c.Email_pessoa;
-                cbxDdd.SelectedItem = c.Ddd_cliente.ToString();
-                txtTelefone.Text = c.Telefone_cliente;
-                cbxCategoria.SelectedIndex = c.Categoria_cliente.Id_categoria - 1;
-                txtCep.Text = c.Cep_cliente;
-                cbxUf.SelectedItem = c.Uf_cliente;
-                cbxCidade.SelectedItem = c.Cidade_cliente;
-                txtBairro.Text = c.Bairro_cliente;
-                txtLog.Text = c.Logradouro_cliente;
-                cbxAtivo.SelectedIndex = c.Ativo_pessoa;
+                txtNome.Text = antigo.Nome_pessoa;
+                txtEmail.Text = antigo.Email_pessoa;
+                cbxDdd.SelectedItem = antigo.Ddd_cliente.ToString();
+                txtTelefone.Text = antigo.Telefone_cliente;
+                cbxCategoria.SelectedIndex = antigo.Categoria_cliente.Id_categoria - 1;
+                txtCep.Text = antigo.Cep_cliente;
+                cbxUf.SelectedItem = antigo.Uf_cliente;
+                cbxCidade.SelectedItem = antigo.Cidade_cliente;
+                txtBairro.Text = antigo.Bairro_cliente;
+                txtLog.Text = antigo.Logradouro_cliente;
+                cbxAtivo.SelectedIndex = antigo.Ativo_pessoa;
+                if(antigo.Ativo_pessoa == 1)
+                    cbxCategoria.Enabled = false;
             }
         }
 
@@ -52,6 +55,7 @@ namespace Exercicio2_clube
             Cliente cliente = new Cliente();
             ClienteDAO dao = new ClienteDAO();
             MensalidadeDAO dao2 = new MensalidadeDAO();
+
             int i = 0;
             String nome = txtNome.Text;
             String email = txtEmail.Text;
@@ -64,29 +68,28 @@ namespace Exercicio2_clube
             String bairro = txtBairro.Text;
             String logradouro = txtLog.Text;
             int ativo = cbxAtivo.SelectedIndex;
+            int id_pessoa = dao2.ObterId();
 
-            if(id == 0)
+            if (nome.Equals("") || email.Equals("") || telefone.Equals("") || cep.Equals("") || bairro.Equals("") || logradouro.Equals(""))
+                MessageBox.Show("Campo(s) não preenchido(s)!");
+            else
             {
-                if (nome.Equals("") || email.Equals("") || telefone.Equals("") || cep.Equals("") || bairro.Equals("") || logradouro.Equals(""))
-                    MessageBox.Show("Campo(s) não preenchido(s)!");
-                else
-                {
-                    cliente.Nome_pessoa = nome;
-                    cliente.Email_pessoa = email;
-                    cliente.Ddd_cliente = ddd;
-                    cliente.Telefone_cliente = telefone;
-                    cliente.Categoria_cliente.Id_categoria = categoria;
-                    cliente.Cep_cliente = cep;
-                    cliente.Uf_cliente = uf;
-                    cliente.Cidade_cliente = cidade;
-                    cliente.Bairro_cliente = bairro;
-                    cliente.Logradouro_cliente = logradouro;
-                    cliente.Ativo_pessoa = ativo;
+                cliente.Nome_pessoa = nome;
+                cliente.Email_pessoa = email;
+                cliente.Ddd_cliente = ddd;
+                cliente.Telefone_cliente = telefone;
+                cliente.Categoria_cliente.Id_categoria = categoria;
+                cliente.Cep_cliente = cep;
+                cliente.Uf_cliente = uf;
+                cliente.Cidade_cliente = cidade;
+                cliente.Bairro_cliente = bairro;
+                cliente.Logradouro_cliente = logradouro;
+                cliente.Ativo_pessoa = ativo;
 
+                if (id == 0)
+                {
                     if (dao.CadastrarCliente(cliente) == 1)
                     {
-                        int id_pessoa = dao2.ObterId();
-
                         if (categoria == 1)
                         {
                             Mensalidade m = new Mensalidade();
@@ -159,14 +162,84 @@ namespace Exercicio2_clube
                     else
                         txtNome.Text = "";
                 }
-            }
-            else
-            {
-                if (nome.Equals("") || email.Equals("") || telefone.Equals("") || cep.Equals("") || bairro.Equals("") || logradouro.Equals(""))
-                    MessageBox.Show("Campo(s) não preenchido(s)!");
-                cliente.Nome_pessoa = txtNome.Text;
+                else
                 {
-                    
+                    if(ativo == 0)
+                    {
+                        if (dao2.VerificarMensalidades(this.id) == 0)
+                            dao.AtualizarCliente(cliente, this.id);
+                        else
+                            MessageBox.Show("O cliente não pode encerrar sua associação pois existem mensalidades não quitadas!");
+                    }
+                    else
+                    {
+                        if(antigo.Ativo_pessoa == 0)
+                        {
+                            if (categoria == 1)
+                            {
+                                Mensalidade m = new Mensalidade();
+                                m.Cliente.Id_pessoa = id_pessoa;
+                                m.Dtv_mensalidade = this.DefinirVencimento(1);
+                                m.Vlri_mensalidade = 155.00;
+                                m.Dtp_mensalidade = m.Dtv_mensalidade;
+                                m.Juros_mensalidade = 8;
+                                m.Vlrf_mensalidade = 0.00;
+                                m.Quitada_mensalidade = 0;
+
+                                dao2.CadastrarMensalidade(m);
+                            }
+                            else if (categoria == 2)
+                            {
+                                for (i = 1; i <= 3; i++)
+                                {
+                                    Mensalidade m = new Mensalidade();
+                                    m.Cliente.Id_pessoa = id_pessoa;
+                                    m.Dtv_mensalidade = this.DefinirVencimento(i);
+                                    m.Vlri_mensalidade = 155.00;
+                                    m.Dtp_mensalidade = m.Dtv_mensalidade;
+                                    m.Juros_mensalidade = 8;
+                                    m.Vlrf_mensalidade = 0.00;
+                                    m.Quitada_mensalidade = 0;
+
+                                    dao2.CadastrarMensalidade(m);
+                                }
+                            }
+                            else if (categoria == 3)
+                            {
+                                for (i = 1; i <= 6; i++)
+                                {
+                                    Mensalidade m = new Mensalidade();
+                                    m.Cliente.Id_pessoa = id_pessoa;
+                                    m.Dtv_mensalidade = this.DefinirVencimento(i);
+                                    m.Vlri_mensalidade = 155.00;
+                                    m.Dtp_mensalidade = m.Dtv_mensalidade;
+                                    m.Juros_mensalidade = 8;
+                                    m.Vlrf_mensalidade = 0.00;
+                                    m.Quitada_mensalidade = 0;
+
+                                    dao2.CadastrarMensalidade(m);
+                                }
+                            }
+                            else
+                            {
+                                for (i = 1; i <= 12; i++)
+                                {
+                                    Mensalidade m = new Mensalidade();
+                                    m.Cliente.Id_pessoa = id_pessoa;
+                                    m.Dtv_mensalidade = this.DefinirVencimento(i);
+                                    m.Vlri_mensalidade = 155.00;
+                                    m.Dtp_mensalidade = m.Dtv_mensalidade;
+                                    m.Juros_mensalidade = 8;
+                                    m.Vlrf_mensalidade = 0.00;
+                                    m.Quitada_mensalidade = 0;
+
+                                    dao2.CadastrarMensalidade(m);
+                                }
+                            }
+                        }
+                        else
+                            dao.AtualizarCliente(cliente, this.id);
+                    }
                 }
             }
         }

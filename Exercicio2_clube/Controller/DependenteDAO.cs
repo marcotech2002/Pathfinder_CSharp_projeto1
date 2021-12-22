@@ -99,7 +99,7 @@ namespace Exercicio2_clube.Controller
         }
 
         //Método para cadastrar dependente
-        public void CadastrarDependente(Dependente dependente)
+        public int CadastrarDependente(Dependente dependente)
         {
             if(this.VerificarRepetido(dependente) == 0)
             {
@@ -115,10 +115,12 @@ namespace Exercicio2_clube.Controller
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Cadastro efetuado com sucesso!");
+                    return 1;
                 }
                 catch (SqlException ex)
                 {
                     Console.WriteLine("Erro: " + ex.Message);
+                    return -1;
                 }
                 finally
                 {
@@ -126,7 +128,11 @@ namespace Exercicio2_clube.Controller
                 }
             }
             else
+            {
+                MessageBox.Show("Cadastro impossibilitado!\nO dependente informado já consta na base de dados");
                 conexao.Desconectar(con);
+                return 0;
+            }
         }
 
         //Método para listar dependentes
@@ -185,7 +191,7 @@ namespace Exercicio2_clube.Controller
                               "from tb_pessoa\n" +
                               "inner join tb_cliente\n" +
                               "     on tb_cliente.id_pessoa = tb_pessoa.id_pessoa\n" +
-                              "order by tb_cliente.id_pessoa asc";
+                              "where tb_pessoa.ativo_pessoa = 1 order by tb_cliente.id_pessoa asc";
 
             try
             {
@@ -247,35 +253,6 @@ namespace Exercicio2_clube.Controller
             finally
             {
                 conexao.Desconectar(cmd.Connection);
-            }
-        }
-
-        //Método para verificar se o cliente associado está ativo
-        public int VerificarAtivo(int id_pessoa)
-        {
-            String sql = String.Format("select ativo_pessoa from tb_pessoa where id_pessoa = '{0}'", id_pessoa);
-            bool ativo;
-
-            cmd.Connection = con;
-            cmd.CommandText = sql;
-
-            try
-            {
-                SqlDataReader reader = cmd.ExecuteReader();
-                ativo = (bool)reader.GetValue(0);
-                if (ativo)
-                    return 1;
-                else
-                    return 0;
-            }
-            catch(SqlException ex)
-            {
-                Console.WriteLine("Erro: " + ex.Message);
-                return -1;
-            }
-            finally
-            {
-                conexao.Desconectar(con);
             }
         }
 

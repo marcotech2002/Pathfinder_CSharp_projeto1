@@ -25,15 +25,17 @@ namespace Exercicio2_clube
         {
             InitializeComponent();
             this.ConfigurarComboBox();
+            lblTitulo.Text = "Atualização de dependente";
+            btnCadastrar.Text = "Atualizar";
 
             this.id = id;
-            Dependente d = new DependenteDAO().PesquisarPorId(id);
-            if(d != null)
+            Dependente antigo = new DependenteDAO().PesquisarPorId(id);
+            if(antigo != null)
             {
-                txtNomeDependente.Text = d.Nome_pessoa;
-                txtEmail.Text = d.Email_pessoa;
-                cbxParentesco.SelectedItem = d.Parentesco_dependente;
-                cbxAtivo.SelectedIndex = d.Ativo_pessoa;
+                txtNomeDependente.Text = antigo.Nome_pessoa;
+                txtEmail.Text = antigo.Email_pessoa;
+                cbxParentesco.SelectedItem = antigo.Parentesco_dependente;
+                cbxAtivo.SelectedIndex = antigo.Ativo_pessoa;
             }
         }
 
@@ -52,35 +54,29 @@ namespace Exercicio2_clube
             String parentesco = cbxParentesco.SelectedItem.ToString();
             int ativo = cbxAtivo.SelectedIndex;
 
-            if(this.id == 0)
-            {
-                if (nome.Equals("") || email.Equals("") || parentesco.Equals(""))
-                    MessageBox.Show("Campo(s) não preenchido(s)!");
-                else
-                {
-                    dependente.Nome_pessoa = nome;
-                    dependente.Email_pessoa = email;
-                    dependente.Cliente.Id_pessoa = id;
-                    dependente.Parentesco_dependente = parentesco;
-                    dependente.Ativo_pessoa = ativo;
-
-                    dao.CadastrarDependente(dependente);
-                }
-            }
+            
+            if (nome.Equals("") || email.Equals("") || parentesco.Equals(""))
+                MessageBox.Show("Campo(s) não preenchido(s)!");
             else
             {
-                if (nome.Equals("") || email.Equals("") || parentesco.Equals(""))
-                    MessageBox.Show("Campo(s) não preenchido(s)!");
-                else
-                {
-                    dependente.Nome_pessoa = nome;
-                    dependente.Email_pessoa = email;
-                    dependente.Cliente.Id_pessoa = id;
-                    dependente.Parentesco_dependente = parentesco;
-                    dependente.Ativo_pessoa = ativo;
+                dependente.Nome_pessoa = nome;
+                dependente.Email_pessoa = email;
+                dependente.Cliente.Id_pessoa = id;
+                dependente.Parentesco_dependente = parentesco;
+                dependente.Ativo_pessoa = ativo;
 
-                    dao.AtualizarDependente(dependente, this.id);
+                if (this.id == 0)
+                {
+                    if (dao.CadastrarDependente(dependente) == 1)
+                    {
+                        txtNomeDependente.Text = "";
+                        txtEmail.Text = "";
+                    }
+                    else
+                        txtNomeDependente.Text = "";
                 }
+                else
+                    dao.AtualizarDependente(dependente, this.id);
             }
         }
 
